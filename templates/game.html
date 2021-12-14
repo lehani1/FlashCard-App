@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Game{% endblock %}
+
+
+
+{% block content%}
+<!--marking scheme, +3 for correct guessing, 0 for wrong; if choose difficult:+2 marks, if choose medium +1 else 0 -->
+	<div id='card' align="center">
+		<div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+		  <div class="card-header" id="card_header">Front</div>
+		  <div class="card-body">
+		    <h5 class="card-title" id = "card_content">{{card.front}}</h5>
+		  </div>
+		</div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<button type="button" class="btn btn-primary" onclick="answer()" >Check Annswer</button>
+	<br>
+	<br>
+	<br>
+	<br>
+	<form class="form-horizontal" action="/play/{{deck_id}}/game" method = "POST">
+		<div class="form-group" align="center">
+		  <label class="col-md-4 control-label" for="radios">options</label>
+		  <div class="col-md-4"> 
+		    <label class="radio-inline" for="radios-0">
+		      <input type="radio" name="radios" id="radios-0" value="correct" checked="checked">
+		      {{card.back}}
+		    </label> 
+		    <label class="radio-inline" for="radios-1">
+		      <input type="radio" name="radios" id="radios-1" value="wrong">
+		      {{wrong_card.back}}
+		    </label>
+		  </div>
+		</div>
+
+		<div class="form-group" align="center">
+		  <label class="col-md-4 control-label" for="radios">difficulty</label>
+		  <div class="col-md-4"> 
+		    <label class="radio-inline" for="radios-0">
+		      <input type="radio" name="radios2" id="radios-0" value="0" checked="checked">
+		      Easy
+		    </label> 
+		    <label class="radio-inline" for="radios-1">
+		      <input type="radio" name="radios2" id="radios-1" value="1">
+		      Medium
+		    </label> 
+		    <label class="radio-inline" for="radios-2">
+		      <input type="radio" name="radios2" id="radios-2" value="2">
+		      Difficult
+		    </label>
+		  </div>
+		</div>
+		<button type="submit" class="btn btn-outline-primary">Submit and Move to next card</button>
+	</form>
+	<script>
+		function answer() {
+			document.getElementById("card_header").innerHTML = "Back";
+			document.getElementById("card_content").innerHTML = "{{card.back}}" ;
+
+		}
+	
+	</script>
+
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Choose deck{% endblock %}
+
+<!---
+	Choose a deck
+
+	then redirect to /play/deck
+
+	choose the number of cards to play [add a slider]
+
+	then play the game
+		game screen structure
+			- rules page first
+			- Navbar dissabled until game finishes or 'give up' button is clicked
+			- Front side of the card is shown, 4 option button are provided, clicking the option will state the option was correct or not
+			- either way, marks would be awarded and then diffiulcty level of the question would be asked
+			- then you can go to the next question
+			- there also will be a skip button to skip to the next question
+			- however skipping a question means no points would be awareded
+			- after completion of the game, user's score would be provided
+
+-->
+
+{% block content%}
+
+
+	{% if flag == 0 %}
+		<h3>Oh no! It seems you dont have any decks</h3>
+		<br>
+		<br>
+		<p><a href="/create/{{user_id}}/deck" class="btn btn-warning">Click here to add new deck </a></p>		
+	{% endif %}
+
+	{% if flag == 1 %}
+		<h3>Chose a deck</h3>
+		<br>
+		<br>
+		<div  id="decks-table">
+			<table class="table table-striped">
+				<tr>
+					<th>Deck id</th>
+					<th>Deck</th>
+					<th>Veiw Deck</th>
+					<th> Click on the link to play with that deck </th>
+				</tr>
+				{% for deck in decks %}
+				<tr>
+					<td>{{ deck.id }}</td>
+					<td>{{deck.deck_name}}</td>
+					<td><a href="/decks/{{deck.id}}" class="btn btn-secondary">View deck</a></td>
+					<td><a href="/play/{{deck.id}}/rules" class="btn btn-outline-success">Play</a></td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	{% endif %}
+	
+
+
+{% endblock %}

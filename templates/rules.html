@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Game rules {% endblock %}
+
+<!---
+	Choose a deck
+
+	then redirect to /play/deck
+
+	choose the number of cards to play [add a slider]
+
+	then play the game
+		game screen structure
+			- rules page first
+			- Navbar dissabled until game finishes or 'give up' button is clicked
+			- Front side of the card is shown, 4 option button are provided, clicking the option will state the option was correct or not
+			- either way, marks would be awarded and then diffiulcty level of the question would be asked
+			- then you can go to the next question
+			- there also will be a skip button to skip to the next question
+			- however skipping a question means no points would be awareded
+			- after completion of the game, user's score would be provided
+
+-->
+
+{% block content %}
+	<h1 class="display-6" align="center"><u>General Instructions</u></h1>
+	<p>Deck id : {{deck_id}}</p>
+	<p>These are rules are to guide you to the game portal</p>
+	<ol>
+		<li>Game will start only if you click on Start button at the bottom of the screen</li>
+		<li>There will be 2 choices for each card, there is only 1 correct answer</li>
+		<li>Chosing a option is mandatory</li>
+		<li>First choose the correct option. Then choose "Check answer" button to see the back of the card, then select the difficulty level. After that you can click "Submit and Next card" option</li>
+		<li>That's all, thank you. Enjoy the game!</li>
+	</ol>
+	<br>
+	<br>
+	<a class="btn btn-success" href="{{url_for('play_game', deck_id = deck_id)}}" role="button">Start</a>
+
+{% endblock %}

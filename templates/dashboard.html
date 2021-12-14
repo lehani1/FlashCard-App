@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+	<h2>Welcome to the dashboard </h2>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h4> User scores </h4>
+	<br>
+	<br>
+	<table class="table table-hover">
+			<tr>
+				<th>Deck id</th>
+				<th>Score</th>
+			</tr>
+			{% for deck in decks %}
+			<tr>
+				<td>{{deck.id}}</td>
+				<td>{{ deck.user_score }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

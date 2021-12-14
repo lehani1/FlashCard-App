@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+	{% if flag==0 %}
+	<!-- Add new card -->
+	<h3>Add new card</h3>
+		<div class="container-sm shadow p-3 mb-5 bg-body rounded" align="center">
+		<form action="/decks/{{deck_id}}/add_card" method = "POST">
+		  <div class="row mb-3">
+		  	<br>
+		    <label for="inputEmail3" class="col-sm-2 col-form-label">Card Front</label>
+		    <br>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="card_front" name="card_front" required>
+		    </div>
+		  </div>
+		  <div class="row mb-3">
+		  	<br>
+		    <label for="inputPassword3" class="col-sm-2 col-form-label">Card Back</label>
+		    <br>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="card_back" name="card_back" required>
+		    </div>
+		  </div>
+		  <button type="submit" class="btn btn-primary" onclick="window.alert('Card added')">Submit</button>
+		 </form>
+		</div>
+		<div>
+			<br>
+			<br>
+			<h3>Add from existing cards</h3>
+			<br>
+			<br>
+			<div  id="decks-table" class="shadow p-3 mb-5 bg-body rounded">
+				<table class="table table-striped" >
+					<tr>
+						<th>card_id</th>
+						<th>Front</th>
+						<th>Back</th>
+						<th>Methods on card</th>
+					</tr>
+					{% for card in cards %}
+					<tr>
+						<td>{{ card.id }}</td>
+						<td>{{card.front}}</td>
+						<td>{{card.back}}</td>
+						<td><a href="/decks/{{deck_id}}/add_existing_card/{{card.id}}" onclick="window.alert('Card added')" class="btn btn-light shadow p-3 mb-5 bg-body rounded">Add card to deck</a></td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+
+	{% endif %}
+
+<!-- Update form -->
+	{% if flag == 1 %}
+
+		<h3>Update card</h3>
+		<div class="container-sm">
+		<form action="/decks/{{deck_id}}/update/{{card_id}}" method = "POST">
+		  <div class="row mb-3">
+		  	<br>
+		    <label for="inputEmail3" class="col-sm-2 col-form-label">Card Front</label>
+		    <br>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="card_front" name="card_front" required>
+		    </div>
+		  </div>
+		  <div class="row mb-3">
+		  	<br>
+		    <label for="inputPassword3" class="col-sm-2 col-form-label">Card Back</label>
+		    <br>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="card_back" name="card_back" required>
+		    </div>
+		  </div>
+		  <button type="submit" class="btn btn-primary">Submit</button>
+		 </form>
+		</div>
+
+
+	{% endif %}	
+<!-- Create new deck -->
+		{% if flag == 2 %}
+
+		<h3>Create new deck</h3>
+		<div class="container-sm">
+			<form action="/create/{{user_id}}/deck" method = "POST">
+			  <div class="row mb-3">
+			  	<br>
+			    <label for="inputEmail3" class="col-sm-2 col-form-label">Deck Name</label>
+			    <br>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="card_front" name="deck_name" required>
+			    </div>
+			  <button type="submit" class="btn btn-primary">Submit</button>
+			 </form>
+		</div>
+
+
+	{% endif %}	
+
+{% endblock %}
+

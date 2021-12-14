@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title%}User Decks{% endblock %}
+
+{% block content%}
+	{% if flag == 0 %}
+		<h5> You don't have any decks configured</h5>
+		<a href="/create/{{user_id}}/deck">Click here to add deck </a>
+	{% endif %}
+
+
+	{% if flag==1 %}
+	<a href="/create/{{user_id}}/deck" class="btn btn-warning">Click here to add new deck </a>
+	<div  id="decks-table" class="shadow p-3 mb-5 bg-body rounded">
+		<table class="table table-striped table-hover">
+			<tr>
+				<th>Deck id</th>
+				<th>Deck</th>
+				<th>Deck score</th>
+				<th>Link to review deck</th>
+				<th>CRUD on deck</th>
+			</tr>
+			{% for deck in decks %}
+			<tr>
+				<td>{{ deck.id }}</td>
+				<td>{{deck.deck_name}}</td>
+				<td>{{deck.user_score}}</td>
+				<td><a href="/decks/{{deck.id}}" class="btn btn-secondary">View deck </a></td>
+				<td><a href="/decks/{{deck.id}}/add_card" class="btn btn-primary">Add card</a>   <a href="/delete/{{user_id}}/deck/{{deck.id}}" class="btn btn-danger">Delete deck</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	{% endif %}
+
+	{% if flag==2 %}
+	<div  id="decks-table" class="shadow p-3 mb-5 bg-body rounded">
+		{% if length !=0 %}
+		<table class="table table-striped table-hover">
+			<tr>
+				<th>Card id</th>
+				<th>Front</th>
+				<th>Back</th>
+				<th>CRUD</th>
+			</tr>
+			{% for card in cards %}
+			<tr>
+				<td>{{card.id}}</td>
+				<td>{{card.front}}</td>
+				<td>{{card.back}}</td>
+				<td><a href="/decks/{{deck_id}}/delete/{{card.id}}" class="btn btn-danger" onclick="window.alert('Cards deleted from deck')">Delete from deck</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
+
+		{% if length == 0 %}
+			<h3>Ooops! Seems you don't have any cards in the deck</h3>
+			<p><a href="/decks/{{deck_id}}/add_card" class="btn btn-light shadow p-3 mb-5 bg-body rounded" >Click here to add cards</a></p>
+		{% endif %}
+	</div>
+
+	{% endif %}
+
+
+{% endblock %}
