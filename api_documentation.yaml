@@ -1,0 +1,309 @@
+openapi: 3.0.0
+info:
+  title: Final Project API Documentation
+  description: >
+    <div><h3>This documentation shows various API methods implemented in the Flash card app</h3>
+    </div>
+    <div>
+    <h3>Card API</h3>
+    <table>
+      <tr>
+        <th>Methods</th>
+        <th>Work</th>
+      </tr>
+      <tr>
+          <td>GET</td>
+          <td>Get the cards with specified card id</td>
+      </tr>
+      <tr>
+          <td>PUT</td>
+          <td>Updates the data on the card</td>
+      </tr>
+      <tr>
+          <td>DELETE</td>
+          <td>Deleted the card with specified card id</td>
+      </tr>
+      <tr>
+          <td>POST</td>
+          <td>Creates a new card</td>
+      </tr>
+    </table>
+    </div>
+    
+    <div>
+    <h2>Deck API</h2>
+          <table>
+      <tr>
+        <th>Methods</th>
+        <th>Work</th>
+      </tr>
+      <tr>
+          <td>GET</td>
+          <td>Gets all the decks of the user, returns an array, where each element in the array contains, the deck name, deck id and deck score</td>
+      </tr>
+      <tr>
+          <td>POST</td>
+          <td>Creates a new deck for the specified user</td>
+      </tr>
+      <tr>
+          <td>DELETE</td>
+          <td>Deletes the deck of the specified name and specified user</td>
+      </tr>
+    </table>
+    </div>
+
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000/
+paths:
+  /api/card/{card_id}:
+    description: End point to read card_id.
+    get:
+      description: Operation to Read card resource.
+      parameters:
+        - in: path
+          name: card_id
+          required: true
+          schema:
+            type: integer
+            example: 2
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: card object
+                type: object
+                properties:
+                  front:
+                    type: string
+                    example: "सेब"
+                  back:
+                    type: string
+                    example: "apple"
+
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Card not found
+
+    put:
+      description: Operation to update the card resource.
+      parameters:
+        - in: path
+          name: card_id
+          required: true
+          schema:
+            type: integer
+            example: 5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                front:
+                  type: string
+                  example: "सेब"
+                back:
+                  type: string
+                  example: "apple"
+
+      responses:
+        '200':
+          description: Successfuly updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Card updated 
+
+        '404':
+          description: Card not found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+
+    delete:
+      description: Operation to delete the card resource
+      parameters:
+        - in: path
+          name: card_id
+          required: true
+          schema:
+            type: integer
+            example: 5
+      responses:
+        '200':
+          description: Successfully Deleted
+        '404':
+          description: Card not found
+        '500':
+          description: Intenal Server Error
+
+  /api/card:
+    description: End point to create new card
+    post:
+      description: Operation to create the card in the cards db
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                front:
+                  type: string
+                  example: "घोड़ा"
+                back:
+                  type: string
+                  example: "horse"
+
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  card_id:
+                    type: integer
+                    example: 4
+                  front:
+                    type: string
+                    example: "सेब"
+                  back:
+                    type: string
+                    example: "apple"
+
+        '409':
+          description: card already exist
+        '500':
+          description: Internal Server Error
+
+  
+
+
+  /api/{username}/decks:
+    description: Url to get the the list of all the decks of the user.
+    get:
+      description: Url to get the the list of all the decks of the user.
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            example: user1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    deck_id:
+                      type: integer
+                      example: 10
+                    deck_name:
+                      type: string
+                      example: "newdeck"
+        '400':
+          description: Invalid username
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_message:
+                    type: string
+                    example: "Wrong username"
+        '404':
+          description: The user has not configured any decks
+        '500':
+          description: Internal Server Error
+
+
+
+    post:
+      description: Add new deck 
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            example: user1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deck_name:
+                  type: string
+                  example: new_deck
+      responses:
+        '201':
+          description: Deck added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    deck_id:
+                      type: integer
+                      example: 10
+                    deck_name:
+                      type: string
+                      example: new_deck
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+
+  /api/deck/{username}/delete/{deck_name}:
+    description: URL to delete a deck of a user.
+    delete:
+      description: URL to delete a deck of a user.
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            example: user1
+        - in: path
+          name: deck_name
+          required: true
+          schema:
+            type: string
+            example: new_deck
+      responses:
+        '200':
+          description: Successfully deleted
+
+        '404':
+          description: deck for the user not found
+        '500':
+          description: Internal Server Error
+          
+
